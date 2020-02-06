@@ -2,16 +2,21 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://collateralswap.com",
   "dependencies": {
+    "gh-pages": "^2.2.0",
     "grommet": "^2.10.0",
     "grommet-icons": "^4.4.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",
+    "react-loader-spinner": "^3.1.5",
     "react-scripts": "^3.3.1",
     "styled-components": "^5.0.1",
     "web3": "1.2.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

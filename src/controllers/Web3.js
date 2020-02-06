@@ -1,22 +1,12 @@
-import getWeb3 from "../providers/getWeb3"
+import getWeb3, { isEnabled } from "../providers/getWeb3"
 
-export const checkForWeb3 = ({ noWeb3, notEnabled, enabled }) => {
-    return !window.ethereum ? 
-        noWeb3 : window.ethereum.selectedAddress ? 
-            enabled : notEnabled
-}
-
-export const setupWeb3 = async (forcePrompt) => {
-    let web3;
-    let accounts;
+export const setupWeb3 = async () => {
     try {
-        if (forcePrompt) {
-            await window.ethereum.enable()
-        }
-        web3 = await getWeb3()
-        accounts = await web3.eth.getAccounts()
+        return await getWeb3()
     } catch (error) {
         console.error(`Failed to load web3, accounts, or contract: ${error.message}`)
+        return { web3: null, account: null }
     }
-    return { web3, accounts }
 }
+
+export const isWeb3Enabled = async () => await isEnabled()

@@ -3,7 +3,7 @@ import SwapComponent from "./SwapComponent"
 
 const Web3Enabled = (props) => {
     return (
-        <SwapComponent web3={props.web3} accounts={props.accounts}/>
+        <SwapComponent web3={props.web3} account={props.account}/>
     )
 }
 

@@ -5,11 +5,13 @@ This uses the magic of open composable ethereum protocols, namely: MakerDAO's va
 
 More info: [Twitter thread](https://twitter.com/daveytea/status/1224760425272745991).
 
+Live version of [Collateral Swap](https://collateralswap.com)
+
 ## For devs & designers
  - I've tried to build this for ease of extensibility and skinning. 
  - For the designers, only `App.js` and the files in `/components` need to be modified. The rest should 'just work'.
  - Current ghetto version uses Grommet: https://v2.grommet.io/
- - Contributing: Fork the repo and send PRs
+ - Contributing: Fork the repo and send PRs 💌
 
 ## To run
 ```
@@ -20,4 +22,9 @@ npm start
 ## To build
 ```
 npm run build
+```
+
+## To build
+```
+npm run deploy
 ```

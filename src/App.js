@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { checkForWeb3, setupWeb3 } from "./controllers/Web3"
+
+import { isWeb3Enabled, setupWeb3 } from "./controllers/Web3"
 
 import Web3Unavailable from "./components/Web3Unavailable"
 import Web3NotEnabled from "./components/Web3NotEnabled"
@@ -19,38 +20,41 @@ const theme = {
 }
 
 const App = () => {
-  
   let [web3, setWeb3] = useState(null)
-  let [accounts, setAccounts] = useState(null)
+  let [account, setAccount] = useState(null)
+  let [initalised, setInitalised] = useState(0)
 
   useEffect(() => {
-		if (window.ethereum && window.ethereum.selectedAddress) {
-			loadWeb3()
-		}
-  }, [web3, accounts])
+		async function isEnabled() { return await isWeb3Enabled() }
 
-  const loadWeb3 = async (forcePrompt) => {
+		if (window.ethereum !== undefined) {
+			isEnabled().then(enabled => {
+				if (enabled === true) loadWeb3()
+			})
+		}
+  }, [initalised])
+
+  const loadWeb3 = async () => {
     try {
-      let { web3: web3setup, accounts: accountsSetup } = await setupWeb3(forcePrompt)
-      setWeb3(web3setup)
-      setAccounts(accountsSetup)
+		let { web3, account } = await setupWeb3()
+		setWeb3(web3)
+		setAccount(account)
+		setInitalised(1)
     } catch (e) {
-      console.log(e.message)
+		console.error(`Failed to load web3, accounts, or contract: ${e.message}`)
     }
   }
-  
-  const content = checkForWeb3({
-		noWeb3: <Web3Unavailable />,
-		notEnabled: <Web3NotEnabled loadWeb3={loadWeb3} />,
-		enabled: <Web3Enabled web3={web3} accounts={accounts} />
-  })
 
   return (
 		<Grommet theme={theme}>
 			<Box pad="medium" align="center">
-				<Heading size="small" textAlign="center">Collateral Swap 🦺 (beta)</Heading>
-        <Information />
-				{content}
+				<Heading size="small" textAlign="center">Collateral Swap 🦺 (alpha)</Heading>
+        		<Information />
+			  	{!window.ethereum ? <Web3Unavailable /> :
+				  web3 != null ? 
+					<Web3Enabled web3={web3} account={account} /> :
+					<Web3NotEnabled loadWeb3={loadWeb3} />
+				}
 			</Box>
 		</Grommet>
   )

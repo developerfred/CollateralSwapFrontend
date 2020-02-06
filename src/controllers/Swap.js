@@ -25,8 +25,6 @@ export const performSwap = async (web3, account, cdpId, ethToBat) => {
 	let ethAddress = addresses.aave.ethAddress
 
 	let myProxyAddress = await getUsersProxy(web3, account)
-
-	console.log(`myProxyAddress: ${myProxyAddress}`)
 	
 	let data
 	if (ethToBat) {
@@ -57,9 +55,11 @@ export const performSwap = async (web3, account, cdpId, ethToBat) => {
 	})
 
 	console.log(response)
+	return response
 }
 
 export const getUsersProxy = async (web3, account) => {
 	let proxyRegistryInstance = new web3.eth.Contract(ProxyRegistry, getAddresses().maker.proxyRegistry)
-	return await proxyRegistryInstance.methods.proxies(account).call()
+	let proxyAddress = await proxyRegistryInstance.methods.proxies(account).call()
+	return proxyAddress === "0x0000000000000000000000000000000000000000" ? null : proxyAddress
 }
